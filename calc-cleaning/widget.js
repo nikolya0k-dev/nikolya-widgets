@@ -2,7 +2,7 @@
  * Калькулятор стоимости уборки квартиры — встраиваемый виджет.
  *
  * Подключение одной строкой:
- *   <div id="calc-cleaning"></div><script src="https://ВАШ-САЙТ/calc-cleaning/widget.js"></script>
+ *   <div id="calc-cleaning"></div><script src="https://nikolya-widgets.netlify.app/calc-cleaning/widget.js"></script>
  *
  * Вся разметка и стили живут внутри Shadow DOM: стили сайта не влияют на виджет,
  * а виджет не добавляет на страницу ни одного глобального стиля.

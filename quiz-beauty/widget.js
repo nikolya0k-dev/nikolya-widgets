@@ -2,7 +2,7 @@
  * Квиз «Подберём уход для ваших волос» — встраиваемый виджет.
  *
  * Подключение одной строкой:
- *   <div id="quiz-beauty"></div><script src="https://ВАШ-САЙТ/quiz-beauty/widget.js"></script>
+ *   <div id="quiz-beauty"></div><script src="https://nikolya-widgets.netlify.app/quiz-beauty/widget.js"></script>
  *
  * Вся разметка и стили живут внутри Shadow DOM: стили сайта не влияют на виджет,
  * а виджет не добавляет на страницу ни одного глобального стиля.
@@ -51,6 +51,7 @@
       back: 'Назад',
       next: 'Далее',
       showResult: 'Показать результат',
+      showResultShort: 'Результат',   // на узких экранах (до ~370px)
       multiHint: 'Можно выбрать несколько вариантов',
       resultBadge: 'Ваш результат',
       resultTitle: 'Вам подойдёт',
@@ -116,11 +117,11 @@
       {
         id: 'color',
         label: 'Окрашивание',
-        title: 'Было ли недавно окрашивание?',
+        title: 'Делали окрашивание за последние 3 месяца?',
         options: [
-          { label: 'Да, в последний месяц', hint: 'Или осветление', scores: { bonding: 4 } },
-          { label: '1–3 месяца назад', scores: { bonding: 2, botox: 1 } },
-          { label: 'Нет или очень давно', scores: { keratin: 1, screening: 1 } }
+          { label: 'Да, в последний месяц', hint: 'Окрашивание или осветление', scores: { bonding: 4 } },
+          { label: 'Да, 1–3 месяца назад', scores: { bonding: 2, botox: 1 } },
+          { label: 'Нет', hint: 'Не окрашиваю или это было давно', scores: { keratin: 1, screening: 1 } }
         ]
       },
       {
@@ -246,6 +247,9 @@
     '@media (hover:hover){.qb-ghost:hover{color:var(--qb-text);background:var(--qb-surface)}}',
     '.qb-ghost svg{width:18px;height:18px}',
     '.qb-invisible{visibility:hidden}',
+    '.qb-nav .qb-btn{white-space:nowrap}',
+    '.qb-short{display:none}',
+    '@container (max-width:340px){.qb-long{display:none}.qb-short{display:inline}}',
 
     '.qb-enter{animation:qb-in .28s ease both}',
     '@keyframes qb-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}',
@@ -406,7 +410,8 @@
         '<button type="button" class="qb-btn qb-ghost' + (state.step === 0 ? ' qb-invisible' : '') + '" data-action="back"' +
         (state.step === 0 ? ' tabindex="-1" aria-hidden="true"' : '') + '>' + ICONS.back + esc(T.back) + '</button>' +
         '<button type="button" class="qb-btn qb-primary" data-action="next"' + (picked.length ? '' : ' disabled') + '>' +
-        esc(isLast ? T.showResult : T.next) + ICONS.next + '</button></div>';
+        (isLast ? '<span class="qb-long">' + esc(T.showResult) + '</span><span class="qb-short">' + esc(T.showResultShort) + '</span>' : esc(T.next)) +
+        ICONS.next + '</button></div>';
       return html;
     }
 
