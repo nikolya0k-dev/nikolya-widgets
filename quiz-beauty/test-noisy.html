@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Стресс-тест стилей — quiz-beauty</title>
+<!--
+  «Агрессивные» глобальные стили, как на реальных сайтах с тяжёлыми темами.
+  Виджет должен выглядеть так же, как на demo.html.
+-->
+<style>
+  :root { --accent: red; --primary: lime; --qb-accent: red; --cc-accent: red; color-scheme: dark; }
+  html { font-size: 10px !important; }
+  * {
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: content-box !important;
+    font-family: "Comic Sans MS", "Courier New", cursive !important;
+    letter-spacing: 2px !important;
+    line-height: 3 !important;
+    text-transform: uppercase !important;
+    transition: none !important;
+  }
+  body {
+    background: #1b1b2f !important; color: #ff6ec7 !important;
+    text-align: right !important; font-size: 22px !important; font-weight: 900 !important;
+    word-spacing: 8px; text-shadow: 1px 1px 0 #000;
+  }
+  div, span, p, label, a, ul, li, aside, fieldset { border: 1px dotted cyan !important; background: rgba(255,255,0,.08) !important; }
+  h1, h2, h3 { font-size: 64px !important; color: yellow !important; text-decoration: underline wavy !important; font-style: italic !important; }
+  p { font-size: 30px !important; color: orange !important; }
+  button, input, select, textarea {
+    all: unset; background: red !important; color: #fff !important; border: 6px dashed lime !important;
+    border-radius: 0 !important; font-size: 32px !important; width: 300px !important; height: 80px !important;
+    display: block !important; float: right !important; box-shadow: 0 0 30px magenta !important;
+  }
+  input[type="range"] { writing-mode: vertical-lr !important; direction: rtl !important; }
+  input[type="checkbox"], input[type="radio"] { appearance: auto !important; width: 60px !important; height: 60px !important; }
+  a { color: lime !important; text-decoration: line-through !important; font-size: 40px !important; }
+  svg { display: none !important; width: 200px !important; }
+  img, svg, video { max-width: 10% !important; }
+  ul, ol { list-style: square inside !important; }
+  details, summary { display: block !important; }
+  output { font-size: 60px !important; }
+  [hidden] { display: block !important; }
+  [style] { opacity: .9 !important; }
+  .qb, .cc, [class*="qb-"], [class*="cc-"] { display: none !important; color: red !important; }
+  beauty-quiz-widget, cleaning-calc-widget { display: none !important; zoom: .5; }
+  ::selection { background: lime; }
+  .page { max-width: 1100px; margin: 0 auto !important; padding: 24px 16px !important; }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>Шумная страница</h1>
+  <p>Сброс отступов, Comic Sans, uppercase, свои стили для button/input/h1–h3/svg, переменные --accent.</p>
+  <button>Кнопка сайта</button>
+  <input placeholder="Поле сайта">
+  <br><br>
+
+  <div id="quiz-beauty"></div><script src="widget.js"></script>
+
+  <h2>Контент сайта после виджета</h2>
+  <p>Этот текст должен оставаться «шумным» — значит, виджет не ломает стили сайта.</p>
+</div>
+</body>
+</html>

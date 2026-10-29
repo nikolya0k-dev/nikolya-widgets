@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Квизы и калькуляторы для сайта — демо</title>
+<style>
+  :root { --text: #1d2327; --muted: #5f6b70; --border: #e2e6e8; --bg: #f6f7f8; --card: #fff; --accent: #0f8a7e; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
+  main { max-width: 960px; margin: 0 auto; padding: 48px 16px 64px; }
+  h1 { margin: 0 0 8px; font-size: clamp(26px, 5vw, 36px); line-height: 1.15; }
+  .lead { margin: 0 0 32px; color: var(--muted); max-width: 640px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
+  .card h2 { margin: 0 0 6px; font-size: 20px; }
+  .card p { margin: 0 0 16px; color: var(--muted); font-size: 15px; }
+  .links { display: flex; flex-wrap: wrap; gap: 8px; }
+  .links a { padding: 8px 14px; border-radius: 10px; border: 1px solid var(--border); color: var(--text); text-decoration: none; font-size: 14px; font-weight: 600; }
+  .links a:first-child { background: var(--accent); border-color: var(--accent); color: #fff; }
+  code { display: block; margin-top: 16px; padding: 12px; border-radius: 10px; background: var(--bg); font-size: 12.5px; overflow-x: auto; white-space: nowrap; }
+  ul { margin: 32px 0 0; padding-left: 20px; color: var(--muted); font-size: 15px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Квиз или калькулятор стоимости для вашего сайта</h1>
+  <p class="lead">Демо-виджеты, которые вставляются одной строкой в Tilda, WordPress или обычный HTML. Стили изолированы в Shadow DOM — тема сайта их не ломает.</p>
+  <div class="grid">
+    <section class="card">
+      <h2>Квиз для салона красоты</h2>
+      <p>5 вопросов о волосах → подобранная процедура с ценой → отправка ответов в WhatsApp или Telegram.</p>
+      <div class="links"><a href="quiz-beauty/demo.html">Открыть демо</a><a href="quiz-beauty/test-noisy.html">Стресс-тест стилей</a><a href="quiz-beauty/insert.md">Инструкция</a></div>
+      <code>&lt;div id="quiz-beauty"&gt;&lt;/div&gt;&lt;script src="/quiz-beauty/widget.js"&gt;&lt;/script&gt;</code>
+    </section>
+    <section class="card">
+      <h2>Калькулятор уборки квартиры</h2>
+      <p>Тип уборки, площадь, санузлы и доп. услуги → мгновенный расчёт с разбивкой → отправка в мессенджер.</p>
+      <div class="links"><a href="calc-cleaning/demo.html">Открыть демо</a><a href="calc-cleaning/test-noisy.html">Стресс-тест стилей</a><a href="calc-cleaning/insert.md">Инструкция</a></div>
+      <code>&lt;div id="calc-cleaning"&gt;&lt;/div&gt;&lt;script src="/calc-cleaning/widget.js"&gt;&lt;/script&gt;</code>
+    </section>
+  </div>
+  <ul>
+    <li>Один файл widget.js, без зависимостей и CDN.</li>
+    <li>Цены, тексты, цвета и контакты — в одном объекте настроек в начале файла.</li>
+    <li>Адаптив от 320px, поля 16px (без зума на iPhone), работает в Safari на iOS.</li>
+  </ul>
+</main>
+</body>
+</html>
