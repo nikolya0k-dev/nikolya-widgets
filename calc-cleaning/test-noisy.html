@@ -36,6 +36,9 @@
   }
   input[type="range"] { writing-mode: vertical-lr !important; direction: rtl !important; }
   input[type="checkbox"], input[type="radio"] { appearance: auto !important; width: 60px !important; height: 60px !important; }
+  dialog { all: unset; display: block !important; position: static !important; background: lime !important; border: 10px solid red !important; }
+  dialog::backdrop { background: rgba(255,0,0,.9) !important; }
+  textarea { height: 10px !important; font-size: 40px !important; resize: both !important; }
   a { color: lime !important; text-decoration: line-through !important; font-size: 40px !important; }
   svg { display: none !important; width: 200px !important; }
   img, svg, video { max-width: 10% !important; }

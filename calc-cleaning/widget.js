@@ -87,6 +87,14 @@
       whatsapp: 'Отправить в WhatsApp',
       telegram: 'Отправить в Telegram',
       copied: 'Текст скопирован — если он не подставился в чат, просто вставьте его',
+      // Окно перед переходом в Telegram (Telegram не всегда подставляет текст сам)
+      tgCopiedTitle: 'Расчёт скопирован',
+      tgCopiedText: 'Сейчас откроется Telegram — вставьте текст в чат и отправьте.',
+      tgManualTitle: 'Скопируйте расчёт',
+      tgManualText: 'Не получилось скопировать автоматически. Выделите текст ниже и скопируйте его, затем откройте Telegram и вставьте текст в чат.',
+      tgCopy: 'Скопировать текст',
+      tgOpen: 'Открыть Telegram',
+      close: 'Закрыть',
       disclaimer: 'Расчёт предварительный. Химия и инвентарь включены в стоимость.',
       // Шаблон сообщения в мессенджер
       msgIntro: 'Здравствуйте! Хочу заказать уборку. Расчёт с сайта:',
@@ -111,18 +119,23 @@
   var CSS = [
     ':host{all:initial;display:block}',
     '*,*::before,*::after{box-sizing:border-box}',
-    '.cc{',
+    '[hidden]{display:none!important}',
+    '.cc,.cc-dialog{',
     '  --cc-accent:' + C.accent + ';--cc-accent-hover:' + C.accentHover + ';--cc-accent-text:' + C.accentText + ';',
     '  --cc-accent-soft:' + C.accentSoft + ';--cc-bg:' + C.bg + ';--cc-surface:' + C.surface + ';',
     '  --cc-text:' + C.text + ';--cc-muted:' + C.muted + ';--cc-border:' + C.border + ';',
     '  --cc-radius:' + CONFIG.radius + 'px;',
-    '  position:relative;max-width:' + CONFIG.maxWidth + 'px;margin:0 auto;padding:28px;',
-    '  background:var(--cc-bg);color:var(--cc-text);border:1px solid var(--cc-border);border-radius:var(--cc-radius);',
-    '  box-shadow:0 1px 2px rgba(20,38,42,.04),0 12px 32px -12px rgba(20,38,42,.14);',
+    '  background:var(--cc-bg);color:var(--cc-text);',
     '  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;',
     '  font-size:16px;font-weight:400;line-height:1.45;letter-spacing:normal;text-align:left;text-transform:none;',
     '  -webkit-text-size-adjust:100%;text-size-adjust:100%;-webkit-font-smoothing:antialiased;color-scheme:light;',
-    '  container-type:inline-size;overflow-wrap:break-word;',
+    '  overflow-wrap:break-word;',
+    '}',
+    '.cc{',
+    '  position:relative;max-width:' + CONFIG.maxWidth + 'px;margin:0 auto;padding:28px;',
+    '  border:1px solid var(--cc-border);border-radius:var(--cc-radius);',
+    '  box-shadow:0 1px 2px rgba(20,38,42,.04),0 12px 32px -12px rgba(20,38,42,.14);',
+    '  container-type:inline-size;',
     '}',
     'h2,h3,p,fieldset,legend{margin:0;padding:0;border:0;font:inherit;color:inherit;letter-spacing:inherit;text-transform:none}',
     'legend{display:block;width:100%}',
@@ -239,6 +252,34 @@
     '  transform:translate(-50%,8px);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}',
     '.cc-toast.cc-show{opacity:1;transform:translate(-50%,0)}',
 
+    '.cc-dialog{position:fixed;inset:0;z-index:2147483647;width:calc(100% - 32px);max-width:400px;max-height:calc(100% - 32px);',
+    '  margin:auto;padding:28px 24px 24px;overflow:auto;border:0;border-radius:20px;text-align:center;',
+    '  box-shadow:0 24px 64px -16px rgba(0,0,0,.35)}',
+    '.cc-dialog::backdrop{background:rgba(15,20,24,.55)}',
+    '.cc-dialog.cc-fallback{display:block;box-shadow:0 0 0 100vmax rgba(15,20,24,.55),0 24px 64px -16px rgba(0,0,0,.35)}',
+    '.cc-dialog[open]{animation:cc-pop .2s ease both}',
+    '@keyframes cc-pop{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}',
+    '@media (prefers-reduced-motion:reduce){.cc-dialog[open]{animation:none}}',
+    '.cc-dlg-close{position:absolute;top:10px;right:10px;display:flex;align-items:center;justify-content:center;',
+    '  width:40px;height:40px;border-radius:50%;color:var(--cc-muted)}',
+    '@media (hover:hover){.cc-dlg-close:hover{background:var(--cc-surface);color:var(--cc-text)}}',
+    '.cc-dlg-close svg{width:20px;height:20px}',
+    '.cc-dlg-icon{display:flex;align-items:center;justify-content:center;width:56px;height:56px;margin:0 auto 14px;',
+    '  border-radius:50%;background:#e6f6ec;color:#1f9d55}',
+    '.cc-dlg-icon svg{width:28px;height:28px}',
+    '.cc-dialog[data-mode="manual"] .cc-dlg-icon{background:var(--cc-accent-soft);color:var(--cc-accent)}',
+    '.cc-dlg-title{font-size:21px;font-weight:700;line-height:1.25}',
+    '.cc-dlg-text{margin-top:8px;font-size:15px;color:var(--cc-muted)}',
+    '.cc-dlg-area{display:block;width:100%;height:170px;margin:16px 0 0;padding:12px 14px;resize:none;',
+    '  font:inherit;font-size:16px;line-height:1.4;text-align:left;color:var(--cc-text);background:var(--cc-surface);',
+    '  border:1.5px solid var(--cc-border);border-radius:12px;outline:none;-webkit-appearance:none;appearance:none;',
+    '  -webkit-user-select:text;user-select:text}',
+    '.cc-dlg-area:focus{border-color:var(--cc-accent)}',
+    '.cc-dlg-actions{display:grid;gap:10px;margin-top:18px}',
+    '.cc-dlg-actions .cc-btn{width:100%}',
+    '.cc-outline{border:1.5px solid var(--cc-border);color:var(--cc-text)}',
+    '@media (hover:hover){.cc-outline:hover{border-color:var(--cc-accent)}}',
+
     '@media (max-width:480px){',
     '  .cc{padding:20px 16px;border-radius:' + Math.min(CONFIG.radius, 16) + 'px}',
     '  .cc-title{font-size:22px}.cc-summary{padding:16px}.cc-total-sum{font-size:27px}',
@@ -246,6 +287,9 @@
   ].join('\n');
 
   var ICONS = {
+    close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+    copied: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+    copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>',
     check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
     minus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 12h12"/></svg>',
     plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 12h12M12 6v12"/></svg>',
@@ -283,10 +327,99 @@
     ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;font-size:16px';
     root.appendChild(ta);
     ta.select();
+    ta.setSelectionRange(0, text.length);
     var ok = false;
     try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
     root.removeChild(ta);
     return ok;
+  }
+
+  // Окно «текст скопирован → открыть Telegram». <dialog> со showModal() попадает в top layer,
+  // поэтому его не перекрывают шапки сайта и не обрезают overflow/transform родителей.
+  function createDialog(root) {
+    var el = document.createElement('dialog');
+    el.className = 'cc-dialog';
+    el.setAttribute('aria-labelledby', 'cc-dlg-title');
+    el.innerHTML =
+      '<button type="button" class="cc-dlg-close" data-dlg="close" aria-label="' + esc(T.close) + '">' + ICONS.close + '</button>' +
+      '<div class="cc-dlg-icon"></div>' +
+      '<h3 class="cc-dlg-title" id="cc-dlg-title"></h3>' +
+      '<p class="cc-dlg-text"></p>' +
+      '<textarea class="cc-dlg-area" readonly rows="6" aria-label="' + esc(T.summaryTitle) + '"></textarea>' +
+      '<div class="cc-dlg-actions">' +
+      '<a class="cc-btn cc-tg cc-dlg-open" target="_blank" rel="noopener">' + ICONS.tg + esc(T.tgOpen) + '</a>' +
+      '<button type="button" class="cc-btn cc-outline" data-dlg="copy">' + ICONS.copy + esc(T.tgCopy) + '</button>' +
+      '</div>';
+    root.appendChild(el);
+
+    var icon = el.querySelector('.cc-dlg-icon');
+    var title = el.querySelector('.cc-dlg-title');
+    var desc = el.querySelector('.cc-dlg-text');
+    var area = el.querySelector('.cc-dlg-area');
+    var openLink = el.querySelector('.cc-dlg-open');
+    var copyBtn = el.querySelector('[data-dlg="copy"]');
+    var returnFocus = null;
+
+    function setMode(copied) {
+      el.setAttribute('data-mode', copied ? 'copied' : 'manual');
+      icon.innerHTML = copied ? ICONS.copied : ICONS.copy;
+      title.textContent = copied ? T.tgCopiedTitle : T.tgManualTitle;
+      desc.textContent = copied ? T.tgCopiedText : T.tgManualText;
+      area.hidden = copied;
+      copyBtn.hidden = copied;
+    }
+
+    function selectArea() {
+      area.focus({ preventScroll: true });
+      area.setSelectionRange(0, area.value.length);
+    }
+
+    function show(copied) {
+      setMode(copied);
+      if (typeof el.showModal === 'function') {
+        if (!el.open) el.showModal();
+      } else {
+        el.setAttribute('open', '');
+        el.classList.add('cc-fallback');
+      }
+      if (copied) openLink.focus({ preventScroll: true }); else selectArea();
+    }
+
+    function restore() {
+      if (returnFocus && returnFocus.isConnected) returnFocus.focus({ preventScroll: true });
+      returnFocus = null;
+    }
+
+    function close() {
+      if (typeof el.close === 'function' && el.open) {
+        el.close();
+      } else {
+        el.removeAttribute('open');
+        el.classList.remove('cc-fallback');
+        restore();
+      }
+    }
+
+    el.addEventListener('close', restore);
+    el.addEventListener('click', function (e) {
+      if (e.target === el) return close(); // клик по подложке
+      if (e.target.closest('[data-dlg="close"]')) return close();
+      if (e.target.closest('[data-dlg="copy"]')) {
+        copyText(area.value, el).then(function (ok) { if (ok) setMode(true); else selectArea(); });
+        return;
+      }
+      // Ссылка открывается своим ходом (target=_blank), окно просто закрываем
+      if (e.target.closest('.cc-dlg-open')) setTimeout(close, 0);
+    });
+
+    return {
+      open: function (text, url, from) {
+        returnFocus = from || null;
+        area.value = text;
+        openLink.href = url;
+        copyText(text, root).then(show);
+      }
+    };
   }
 
   function createWidget(container) {
@@ -301,6 +434,7 @@
     wrap.className = 'cc';
     root.appendChild(style);
     root.appendChild(wrap);
+    var dialog = createDialog(root);
 
     var uid = 'cc' + Math.random().toString(36).slice(2, 7);
     var state = {
@@ -312,6 +446,7 @@
     };
     var toastTimer = null;
     var lastTotal = null;
+    var tgUrl = '';
 
     function typeById(id) {
       return CONFIG.types.filter(function (t) { return t.id === id; })[0] || CONFIG.types[0];
@@ -403,7 +538,7 @@
         'placeholder="' + esc(T.namePlaceholder) + '"></label>' +
         '<div class="cc-messengers">' +
         '<a class="cc-btn cc-wa" data-link="wa" href="#" target="_blank" rel="noopener">' + ICONS.wa + esc(T.whatsapp) + '</a>' +
-        '<a class="cc-btn cc-tg" data-link="tg" href="#" target="_blank" rel="noopener">' + ICONS.tg + esc(T.telegram) + '</a>' +
+        '<button type="button" class="cc-btn cc-tg" data-action="telegram">' + ICONS.tg + esc(T.telegram) + '</button>' +
         '</div><p class="cc-disclaimer">' + esc(T.disclaimer) + '</p></div></aside></div>' +
         '<div class="cc-toast" role="status" aria-live="polite"></div>';
 
@@ -420,7 +555,7 @@
       els.lines = wrap.querySelector('[data-bind="lines"]');
       els.total = wrap.querySelector('[data-bind="total"]');
       els.wa = wrap.querySelector('[data-link="wa"]');
-      els.tg = wrap.querySelector('[data-link="tg"]');
+      els.tg = wrap.querySelector('[data-action="telegram"]');
       els.toast = wrap.querySelector('.cc-toast');
     }
 
@@ -449,7 +584,7 @@
 
       var text = encodeURIComponent(message(res));
       els.wa.href = 'https://wa.me/' + String(CONFIG.contacts.whatsapp).replace(/\D/g, '') + '?text=' + text;
-      els.tg.href = 'https://t.me/' + String(CONFIG.contacts.telegram).replace(/^@/, '') + '?text=' + text;
+      tgUrl = 'https://t.me/' + String(CONFIG.contacts.telegram).replace(/^@/, '') + '?text=' + text;
     }
 
     function toast(text) {
@@ -509,9 +644,14 @@
         update();
         return;
       }
+      if (e.target.closest('[data-action="telegram"]')) {
+        // Сначала копируем текст и показываем подсказку; в Telegram — только по кнопке в окне
+        dialog.open(message(calc()), tgUrl, els.tg);
+        return;
+      }
       var link = e.target.closest('[data-link]');
       if (link) {
-        // Дублируем текст в буфер обмена: если мессенджер не подставит его сам, его можно просто вставить
+        // WhatsApp подставляет текст сам; дублируем его в буфер обмена на всякий случай
         copyText(message(calc()), root).then(function (ok) { if (ok) toast(T.copied); });
       }
     });

@@ -67,6 +67,14 @@
       telegram: 'Отправить в Telegram',
       restart: 'Пройти заново',
       copied: 'Текст скопирован — если он не подставился в чат, просто вставьте его',
+      // Окно перед переходом в Telegram (Telegram не всегда подставляет текст сам)
+      tgCopiedTitle: 'Ответы скопированы',
+      tgCopiedText: 'Сейчас откроется Telegram — вставьте текст в чат и отправьте.',
+      tgManualTitle: 'Скопируйте ответы',
+      tgManualText: 'Не получилось скопировать автоматически. Выделите текст ниже и скопируйте его, затем откройте Telegram и вставьте текст в чат.',
+      tgCopy: 'Скопировать текст',
+      tgOpen: 'Открыть Telegram',
+      close: 'Закрыть',
       disclaimer: 'Цена ориентировочная: точную стоимость мастер назовёт после диагностики.',
       // Шаблон сообщения в мессенджер
       msgIntro: 'Здравствуйте! Мои ответы в квизе «Подберём уход для волос»:',
@@ -183,18 +191,22 @@
     ':host{all:initial;display:block}',
     '*,*::before,*::after{box-sizing:border-box}',
     '[hidden]{display:none!important}',
-    '.qb{',
+    '.qb,.qb-dialog{',
     '  --qb-accent:' + C.accent + ';--qb-accent-hover:' + C.accentHover + ';--qb-accent-text:' + C.accentText + ';',
     '  --qb-accent-soft:' + C.accentSoft + ';--qb-bg:' + C.bg + ';--qb-surface:' + C.surface + ';',
     '  --qb-text:' + C.text + ';--qb-muted:' + C.muted + ';--qb-border:' + C.border + ';',
     '  --qb-radius:' + CONFIG.radius + 'px;',
-    '  position:relative;max-width:' + CONFIG.maxWidth + 'px;margin:0 auto;padding:28px;',
-    '  background:var(--qb-bg);color:var(--qb-text);border:1px solid var(--qb-border);border-radius:var(--qb-radius);',
-    '  box-shadow:0 1px 2px rgba(43,29,34,.04),0 12px 32px -12px rgba(43,29,34,.14);',
+    '  background:var(--qb-bg);color:var(--qb-text);',
     '  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;',
     '  font-size:16px;font-weight:400;line-height:1.45;letter-spacing:normal;text-align:left;text-transform:none;',
     '  -webkit-text-size-adjust:100%;text-size-adjust:100%;-webkit-font-smoothing:antialiased;color-scheme:light;',
-    '  container-type:inline-size;overflow-wrap:break-word;',
+    '  overflow-wrap:break-word;',
+    '}',
+    '.qb{',
+    '  position:relative;max-width:' + CONFIG.maxWidth + 'px;margin:0 auto;padding:28px;',
+    '  border:1px solid var(--qb-border);border-radius:var(--qb-radius);',
+    '  box-shadow:0 1px 2px rgba(43,29,34,.04),0 12px 32px -12px rgba(43,29,34,.14);',
+    '  container-type:inline-size;',
     '}',
     'h2,h3,p{margin:0;padding:0;font:inherit;color:inherit;letter-spacing:inherit;text-transform:none}',
     'button,input{font:inherit;color:inherit;letter-spacing:inherit;margin:0}',
@@ -301,6 +313,34 @@
     '  transform:translate(-50%,8px);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}',
     '.qb-toast.qb-show{opacity:1;transform:translate(-50%,0)}',
 
+    '.qb-dialog{position:fixed;inset:0;z-index:2147483647;width:calc(100% - 32px);max-width:400px;max-height:calc(100% - 32px);',
+    '  margin:auto;padding:28px 24px 24px;overflow:auto;border:0;border-radius:20px;text-align:center;',
+    '  box-shadow:0 24px 64px -16px rgba(0,0,0,.35)}',
+    '.qb-dialog::backdrop{background:rgba(15,20,24,.55)}',
+    '.qb-dialog.qb-fallback{display:block;box-shadow:0 0 0 100vmax rgba(15,20,24,.55),0 24px 64px -16px rgba(0,0,0,.35)}',
+    '.qb-dialog[open]{animation:qb-pop .2s ease both}',
+    '@keyframes qb-pop{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}',
+    '@media (prefers-reduced-motion:reduce){.qb-dialog[open]{animation:none}}',
+    '.qb-dlg-close{position:absolute;top:10px;right:10px;display:flex;align-items:center;justify-content:center;',
+    '  width:40px;height:40px;border-radius:50%;color:var(--qb-muted)}',
+    '@media (hover:hover){.qb-dlg-close:hover{background:var(--qb-surface);color:var(--qb-text)}}',
+    '.qb-dlg-close svg{width:20px;height:20px}',
+    '.qb-dlg-icon{display:flex;align-items:center;justify-content:center;width:56px;height:56px;margin:0 auto 14px;',
+    '  border-radius:50%;background:#e6f6ec;color:#1f9d55}',
+    '.qb-dlg-icon svg{width:28px;height:28px}',
+    '.qb-dialog[data-mode="manual"] .qb-dlg-icon{background:var(--qb-accent-soft);color:var(--qb-accent)}',
+    '.qb-dlg-title{font-size:21px;font-weight:700;line-height:1.25}',
+    '.qb-dlg-text{margin-top:8px;font-size:15px;color:var(--qb-muted)}',
+    '.qb-dlg-area{display:block;width:100%;height:170px;margin:16px 0 0;padding:12px 14px;resize:none;',
+    '  font:inherit;font-size:16px;line-height:1.4;text-align:left;color:var(--qb-text);background:var(--qb-surface);',
+    '  border:1.5px solid var(--qb-border);border-radius:12px;outline:none;-webkit-appearance:none;appearance:none;',
+    '  -webkit-user-select:text;user-select:text}',
+    '.qb-dlg-area:focus{border-color:var(--qb-accent)}',
+    '.qb-dlg-actions{display:grid;gap:10px;margin-top:18px}',
+    '.qb-dlg-actions .qb-btn{width:100%}',
+    '.qb-outline{border:1.5px solid var(--qb-border);color:var(--qb-text)}',
+    '@media (hover:hover){.qb-outline:hover{border-color:var(--qb-accent)}}',
+
     '@media (max-width:480px){',
     '  .qb{padding:20px 16px;border-radius:' + Math.min(CONFIG.radius, 16) + 'px}',
     '  .qb-title{font-size:22px}.qb-q{font-size:19px}.qb-proc{font-size:21px}.qb-price{font-size:25px}',
@@ -309,6 +349,9 @@
   ].join('\n');
 
   var ICONS = {
+    close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+    copied: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+    copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>',
     check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
     back: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>',
     next: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>',
@@ -342,10 +385,99 @@
     ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;font-size:16px';
     root.appendChild(ta);
     ta.select();
+    ta.setSelectionRange(0, text.length);
     var ok = false;
     try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
     root.removeChild(ta);
     return ok;
+  }
+
+  // Окно «текст скопирован → открыть Telegram». <dialog> со showModal() попадает в top layer,
+  // поэтому его не перекрывают шапки сайта и не обрезают overflow/transform родителей.
+  function createDialog(root) {
+    var el = document.createElement('dialog');
+    el.className = 'qb-dialog';
+    el.setAttribute('aria-labelledby', 'qb-dlg-title');
+    el.innerHTML =
+      '<button type="button" class="qb-dlg-close" data-dlg="close" aria-label="' + esc(T.close) + '">' + ICONS.close + '</button>' +
+      '<div class="qb-dlg-icon"></div>' +
+      '<h3 class="qb-dlg-title" id="qb-dlg-title"></h3>' +
+      '<p class="qb-dlg-text"></p>' +
+      '<textarea class="qb-dlg-area" readonly rows="6" aria-label="' + esc(T.answersTitle) + '"></textarea>' +
+      '<div class="qb-dlg-actions">' +
+      '<a class="qb-btn qb-tg qb-dlg-open" target="_blank" rel="noopener">' + ICONS.tg + esc(T.tgOpen) + '</a>' +
+      '<button type="button" class="qb-btn qb-outline" data-dlg="copy">' + ICONS.copy + esc(T.tgCopy) + '</button>' +
+      '</div>';
+    root.appendChild(el);
+
+    var icon = el.querySelector('.qb-dlg-icon');
+    var title = el.querySelector('.qb-dlg-title');
+    var desc = el.querySelector('.qb-dlg-text');
+    var area = el.querySelector('.qb-dlg-area');
+    var openLink = el.querySelector('.qb-dlg-open');
+    var copyBtn = el.querySelector('[data-dlg="copy"]');
+    var returnFocus = null;
+
+    function setMode(copied) {
+      el.setAttribute('data-mode', copied ? 'copied' : 'manual');
+      icon.innerHTML = copied ? ICONS.copied : ICONS.copy;
+      title.textContent = copied ? T.tgCopiedTitle : T.tgManualTitle;
+      desc.textContent = copied ? T.tgCopiedText : T.tgManualText;
+      area.hidden = copied;
+      copyBtn.hidden = copied;
+    }
+
+    function selectArea() {
+      area.focus({ preventScroll: true });
+      area.setSelectionRange(0, area.value.length);
+    }
+
+    function show(copied) {
+      setMode(copied);
+      if (typeof el.showModal === 'function') {
+        if (!el.open) el.showModal();
+      } else {
+        el.setAttribute('open', '');
+        el.classList.add('qb-fallback');
+      }
+      if (copied) openLink.focus({ preventScroll: true }); else selectArea();
+    }
+
+    function restore() {
+      if (returnFocus && returnFocus.isConnected) returnFocus.focus({ preventScroll: true });
+      returnFocus = null;
+    }
+
+    function close() {
+      if (typeof el.close === 'function' && el.open) {
+        el.close();
+      } else {
+        el.removeAttribute('open');
+        el.classList.remove('qb-fallback');
+        restore();
+      }
+    }
+
+    el.addEventListener('close', restore);
+    el.addEventListener('click', function (e) {
+      if (e.target === el) return close(); // клик по подложке
+      if (e.target.closest('[data-dlg="close"]')) return close();
+      if (e.target.closest('[data-dlg="copy"]')) {
+        copyText(area.value, el).then(function (ok) { if (ok) setMode(true); else selectArea(); });
+        return;
+      }
+      // Ссылка открывается своим ходом (target=_blank), окно просто закрываем
+      if (e.target.closest('.qb-dlg-open')) setTimeout(close, 0);
+    });
+
+    return {
+      open: function (text, url, from) {
+        returnFocus = from || null;
+        area.value = text;
+        openLink.href = url;
+        copyText(text, root).then(show);
+      }
+    };
   }
 
   function createWidget(container) {
@@ -360,6 +492,7 @@
     wrap.className = 'qb';
     root.appendChild(style);
     root.appendChild(wrap);
+    var dialog = createDialog(root);
 
     var questions = CONFIG.questions;
     var state = { step: 0, answers: {}, name: '' };
@@ -493,7 +626,7 @@
         'placeholder="' + esc(T.namePlaceholder) + '" value="' + esc(state.name) + '"></label>' +
         '<div class="qb-messengers">' +
         '<a class="qb-btn qb-wa" data-link="wa" href="' + esc(l.wa) + '" target="_blank" rel="noopener">' + ICONS.wa + esc(T.whatsapp) + '</a>' +
-        '<a class="qb-btn qb-tg" data-link="tg" href="' + esc(l.tg) + '" target="_blank" rel="noopener">' + ICONS.tg + esc(T.telegram) + '</a>' +
+        '<button type="button" class="qb-btn qb-tg" data-action="telegram">' + ICONS.tg + esc(T.telegram) + '</button>' +
         '</div></div>' +
         '<div class="qb-foot"><p class="qb-disclaimer">' + esc(T.disclaimer) + '</p>' +
         '<button type="button" class="qb-btn qb-ghost" data-action="restart">' + ICONS.restart + esc(T.restart) + '</button></div>' +
@@ -504,9 +637,7 @@
     function updateLinks() {
       var l = links(computeResult());
       var wa = wrap.querySelector('[data-link="wa"]');
-      var tg = wrap.querySelector('[data-link="tg"]');
       if (wa) wa.href = l.wa;
-      if (tg) tg.href = l.tg;
     }
 
     function toast(text) {
@@ -553,11 +684,16 @@
         if (action === 'next' && !btn.disabled) go(state.step + 1);
         if (action === 'back') go(state.step - 1);
         if (action === 'restart') { state.answers = {}; go(0); }
+        if (action === 'telegram') {
+          // Сначала копируем текст и показываем подсказку; в Telegram — только по кнопке в окне
+          var res = computeResult();
+          dialog.open(message(res), links(res).tg, btn);
+        }
         return;
       }
       var link = e.target.closest('[data-link]');
       if (link) {
-        // Дублируем текст в буфер обмена: если мессенджер не подставит его сам, его можно просто вставить
+        // WhatsApp подставляет текст сам; дублируем его в буфер обмена на всякий случай
         copyText(message(computeResult()), root).then(function (ok) { if (ok) toast(T.copied); });
       }
     });
