@@ -7,10 +7,10 @@
 ## Код для вставки
 
 ```html
-<div id="calc-cleaning"></div><script src="https://nikolya-widgets.netlify.app/calc-cleaning/widget.js"></script>
+<div id="calc-cleaning"></div><script src="https://nikolya0k-dev.github.io/nikolya-widgets/calc-cleaning/widget.js"></script>
 ```
 
-Адрес уже указывает на сайт на Netlify. Если переносите `widget.js` в другое место, замените адрес на новый
+Адрес уже указывает на сайт на GitHub Pages. Если переносите `widget.js` в другое место, замените адрес на новый
 (свой хостинг, папка в WordPress — подойдёт любой адрес с https).
 
 ## Tilda
@@ -43,7 +43,7 @@
 
 ```html
 <section class="my-section">
-  <div id="calc-cleaning"></div><script src="https://nikolya-widgets.netlify.app/calc-cleaning/widget.js"></script>
+  <div id="calc-cleaning"></div><script src="https://nikolya0k-dev.github.io/nikolya-widgets/calc-cleaning/widget.js"></script>
 </section>
 ```
 
