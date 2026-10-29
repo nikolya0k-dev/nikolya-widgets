@@ -4,8 +4,8 @@
 
 | Виджет | Исходники | Вставка |
 | --- | --- | --- |
-| Квиз «Подберём уход для ваших волос» | `quiz-beauty/` | `<div id="quiz-beauty"></div><script src="https://nikolya-widgets.netlify.app/quiz-beauty/widget.js"></script>` |
-| Калькулятор уборки квартиры | `calc-cleaning/` | `<div id="calc-cleaning"></div><script src="https://nikolya-widgets.netlify.app/calc-cleaning/widget.js"></script>` |
+| Квиз «Подберём уход для ваших волос» | `quiz-beauty/` | `<div id="quiz-beauty"></div><script src="https://nikolya0k-dev.github.io/nikolya-widgets/quiz-beauty/widget.js"></script>` |
+| Калькулятор уборки квартиры | `calc-cleaning/` | `<div id="calc-cleaning"></div><script src="https://nikolya0k-dev.github.io/nikolya-widgets/calc-cleaning/widget.js"></script>` |
 
 В каждой папке:
 
@@ -22,10 +22,12 @@ inline-стилем, поэтому стили сайта не попадают 
 
 ## Сборка и публикация
 
+Сайт публикуется на GitHub Pages из ветки `gh-pages`: https://nikolya0k-dev.github.io/nikolya-widgets/
+
 ```bash
 node scripts/build.mjs          # собирает deploy/
 node scripts/serve.mjs deploy   # локальная проверка на http://localhost:5178
+node scripts/publish.mjs        # после коммита: выкладывает deploy/ в ветку gh-pages
 ```
 
 `deploy/index.html` — витрина для заказчика: оба виджета встроены и работают прямо на странице.
-`deploy/` можно перетащить в Netlify Drop или подключить репозиторий — `netlify.toml` уже настроен.

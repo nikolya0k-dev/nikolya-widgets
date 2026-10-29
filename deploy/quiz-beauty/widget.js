@@ -2,7 +2,7 @@
  * Квиз «Подберём уход для ваших волос» — встраиваемый виджет.
  *
  * Подключение одной строкой:
- *   <div id="quiz-beauty"></div><script src="https://nikolya-widgets.netlify.app/quiz-beauty/widget.js"></script>
+ *   <div id="quiz-beauty"></div><script src="https://nikolya0k-dev.github.io/nikolya-widgets/quiz-beauty/widget.js"></script>
  *
  * Вся разметка и стили живут внутри Shadow DOM: стили сайта не влияют на виджет,
  * а виджет не добавляет на страницу ни одного глобального стиля.
