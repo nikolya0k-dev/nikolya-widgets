@@ -1,0 +1,7 @@
+/*/widget.js
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=300, must-revalidate
+  Content-Type: text/javascript; charset=utf-8
+
+/*/insert.md
+  Content-Type: text/plain; charset=utf-8
