@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "serve": "node scripts/serve.mjs deploy 5178"
+    "serve": "node scripts/serve.mjs deploy 5178",
+    "publish": "node scripts/publish.mjs"
   }
 }

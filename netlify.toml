@@ -1,5 +1,0 @@
-# Для деплоя из git: Netlify соберёт deploy/ и опубликует её.
-# Для ручного деплоя достаточно перетащить папку deploy/ в Netlify Drop.
-[build]
-  command = "node scripts/build.mjs"
-  publish = "deploy"
