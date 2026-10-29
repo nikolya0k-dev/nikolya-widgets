@@ -4,8 +4,8 @@
 
 | Виджет | Исходники | Вставка |
 | --- | --- | --- |
-| Квиз «Подберём уход для ваших волос» | `quiz-beauty/` | `<div id="quiz-beauty"></div><script src=".../quiz-beauty/widget.js"></script>` |
-| Калькулятор уборки квартиры | `calc-cleaning/` | `<div id="calc-cleaning"></div><script src=".../calc-cleaning/widget.js"></script>` |
+| Квиз «Подберём уход для ваших волос» | `quiz-beauty/` | `<div id="quiz-beauty"></div><script src="https://nikolya-widgets.netlify.app/quiz-beauty/widget.js"></script>` |
+| Калькулятор уборки квартиры | `calc-cleaning/` | `<div id="calc-cleaning"></div><script src="https://nikolya-widgets.netlify.app/calc-cleaning/widget.js"></script>` |
 
 В каждой папке:
 

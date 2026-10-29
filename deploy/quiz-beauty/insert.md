@@ -7,11 +7,11 @@
 ## Код для вставки
 
 ```html
-<div id="quiz-beauty"></div><script src="https://ВАШ-САЙТ.netlify.app/quiz-beauty/widget.js"></script>
+<div id="quiz-beauty"></div><script src="https://nikolya-widgets.netlify.app/quiz-beauty/widget.js"></script>
 ```
 
-Замените `https://ВАШ-САЙТ.netlify.app` на адрес, где лежит `widget.js`
-(Netlify, свой хостинг, папка в WordPress — подойдёт любой адрес с https).
+Адрес уже указывает на сайт на Netlify. Если переносите `widget.js` в другое место, замените адрес на новый
+(свой хостинг, папка в WordPress — подойдёт любой адрес с https).
 
 ## Tilda
 
@@ -43,7 +43,7 @@
 
 ```html
 <section class="my-section">
-  <div id="quiz-beauty"></div><script src="https://ВАШ-САЙТ.netlify.app/quiz-beauty/widget.js"></script>
+  <div id="quiz-beauty"></div><script src="https://nikolya-widgets.netlify.app/quiz-beauty/widget.js"></script>
 </section>
 ```
 
